@@ -51,3 +51,33 @@ export const loginTC = (loginParams: LoginParamsType) => async (dispatch: Dispat
 type StateType = typeof InitialState
 
 type AuthActionsType = ReturnType<typeof setIsLoggedInAC> | SetAppStatusActionType
+
+
+
+//////////////////// for del
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
