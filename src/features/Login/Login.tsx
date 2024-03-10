@@ -9,10 +9,11 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {FormikErrors, useFormik} from "formik";
 import * as Yup from 'yup';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
 import {LoginParamsType} from "../../api/todolists-api";
-import {useAppDispatch} from "../../app/store";
+import {AppRootStateType, useAppDispatch, useAppSelector} from "../../app/store";
+import {Navigate} from "react-router-dom";
 
 
 type FormikErrorType = {
@@ -24,6 +25,8 @@ type FormikErrorType = {
 
 export const Login = () => {
 
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+
     const dispatch = useAppDispatch()
 
     const formik = useFormik({
@@ -32,7 +35,7 @@ export const Login = () => {
             password: "",
             rememberMe: false
         },
-        isInitialValid:false,
+        isInitialValid: false,
         validationSchema: Yup.object({
             email: Yup.string()
                 .email('Invalid email address')
@@ -55,14 +58,17 @@ export const Login = () => {
             formikHelpers.setSubmitting(true)
             dispatch(loginTC(values))
                 .then(() => {
-                    formik.resetForm()
-                    formikHelpers.setSubmitting(false)
+                        formik.resetForm()
+                        formikHelpers.setSubmitting(false)
                     }
                 )
         },
     });
 
-    console.log(formik.isValid, formik.isSubmitting, formik.isSubmitting || !formik.isValid)
+    if (isLoggedIn) {
+        return <Navigate to={"/"}/>
+    }
+
 
     return (
         <Grid container justifyContent={'center'}>
